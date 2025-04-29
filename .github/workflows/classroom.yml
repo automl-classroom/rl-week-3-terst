@@ -1,0 +1,52 @@
+name: Autograding Tests
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+env:
+
+  package-name: rl_exercises
+  test-dir: tests
+  UV_SYSTEM_PYTHON: 1
+
+  # Arguments used for pytest
+  pytest-args: >-
+    --durations=20
+    -v
+
+jobs:
+  tests:
+    name: testing
+    defaults:
+      run:
+        shell: bash -l {0}  # Default to using bash on all and load (-l) .bashrc which miniconda uses
+
+    steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+    
+          - name: Install uv
+            uses: astral-sh/setup-uv@v5
+            with:
+              # Install a specific version of uv.
+              version: "0.6.14"
+    
+          - name: "Set up Python"
+            uses: actions/setup-python@v5
+            with:
+              python-version-file: "pyproject.toml"
+    
+          - name: Install ${{ env.package-name }}
+            run: make install
+    
+          - name: Run tests
+            run: make test-week-2
+        
+          - name: Autograding Reporter
+            uses: classroom-resources/autograding-grading-reporter@v1
