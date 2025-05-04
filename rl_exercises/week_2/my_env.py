@@ -42,7 +42,8 @@ class MyEnv(gym.Env):
     def step(self, action):
         if not self.action_space.contains(action):
             raise RuntimeError(f"Invalid action: {action}")
-        reward = float(action)  # Reward is equal to the action taken, cast to float
+        # Reward is equal to the action taken, cast to float
+        reward = float(action)
         self.state = action  # Transition to the state equal to the action
         terminated = False  # No terminal state in this simple example
         truncated = False

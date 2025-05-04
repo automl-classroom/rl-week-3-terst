@@ -91,7 +91,8 @@ class ValueIteration(AbstractAgent):
         if not self.policy_fitted:
             self.update_agent()
 
-        action = self.pi[observation]  # Select action based on the learned policy
+        # Select action based on the learned policy
+        action = self.pi[observation]
         return action, {}
 
 
