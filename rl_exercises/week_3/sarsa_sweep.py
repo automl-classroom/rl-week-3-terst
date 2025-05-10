@@ -9,7 +9,7 @@ from hydra.utils import instantiate
 from omegaconf import DictConfig
 
 
-def run_episodes(agent, env, num_episodes=5):
+def run_episodes(agent, env, num_episodes=5, discount_factor=1.0):
     """Run multiple episodes using the SARSA algorithm.
 
     Each episode is executed with the agent's current policy. The agent updates its Q-values
@@ -23,30 +23,38 @@ def run_episodes(agent, env, num_episodes=5):
         The environment in which the agent interacts.
     num_episodes : int, optional
         Number of episodes to run, by default 5.
+    discount_factor : float, optional
+        Discount factor for future rewards, by default 1.0.
 
     Returns
     -------
     float
-        Mean total reward across all episodes.
+        Mean total discounted reward across all episodes.
     """
+    total_discounted_rewards = []
 
-    # TODO: Extend the run_episodes function.
-    # Currently, the funciton runs only one episode and returns the total reward without discounting.
-    # Extend it to run multiple episodes and store the total discounted rewards in a list.
-    # Finally, return the mean discounted reward across episodes.
+    for episode in range(num_episodes):
+        total_reward = 0.0
+        state, _ = env.reset()
+        done = False
+        action = agent.predict_action(state)
+        step = 0
 
-    total = 0.0
-    state, _ = env.reset()
-    done = False
-    action = agent.predict_action(state)
-    while not done:
-        next_state, reward, term, trunc, _ = env.step(action)
-        done = term or trunc
-        next_action = agent.predict_action(next_state)
-        agent.update_agent(state, action, reward, next_state, next_action, done)
-        total += reward
-        state, action = next_state, next_action
-    return total
+        while not done:
+            next_state, reward, term, trunc, _ = env.step(action)
+            done = term or trunc
+            next_action = agent.predict_action(next_state)
+            agent.update_agent(state, action, reward, next_state, next_action, done)
+
+            # Apply discount factor to the reward
+            total_reward += (discount_factor**step) * reward
+            state, action = next_state, next_action
+            step += 1
+
+        total_discounted_rewards.append(total_reward)
+
+    # Return the mean discounted reward across episodes
+    return sum(total_discounted_rewards) / len(total_discounted_rewards)
 
 
 # Decorate the function with the path of the config file and the particular config to use

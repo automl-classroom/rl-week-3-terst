@@ -44,7 +44,7 @@ class EpsilonGreedyPolicy(object):
         # our private RNG, so sampling is reproducible
         self.rng = np.random.default_rng(seed)
 
-    def __call__(self, Q: DefaultDict, state: tuple, evaluate: bool = False) -> int:  # type: ignore # noqa: E501
+    def __call__(self, Q: DefaultDict, state: tuple, evaluate: bool = False) -> int:
         """Select an action for the given state using epsilon-greedy strategy.
 
         Parameters
@@ -66,9 +66,8 @@ class EpsilonGreedyPolicy(object):
         if evaluate:
             return int(np.argmax(Q[state]))
 
-        # TODO: Implement epsilon-greedy action selection
-        # With prob 1 - epsilon return the greedy action
-        # Wtih prob epsilon, use the policy's RNG to select a random action
-        # Return the selected action -- currently always returns 0
-
-        return 0
+        # Epsilon-greedy action selection
+        if self.rng.random() < self.epsilon:
+            return self.rng.integers(self.env.action_space.n)
+        else:
+            return int(np.argmax(Q[state]))

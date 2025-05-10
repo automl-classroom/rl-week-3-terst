@@ -128,9 +128,6 @@ class SARSAAgent(AbstractAgent):
         """
 
         # SARSA update rule
-        # TODO: Implement the SARSA update rule here.
-        # Use a value of 0. for terminal states and
-        # update the new Q value in the Q table of this class.
-        # Return the new Q value --currently always returns 0.0
-
-        return 0.0
+        target = reward + (0 if done else self.gamma * self.Q[next_state][next_action])
+        self.Q[state][action] += self.alpha * (target - self.Q[state][action])
+        return self.Q[state][action]

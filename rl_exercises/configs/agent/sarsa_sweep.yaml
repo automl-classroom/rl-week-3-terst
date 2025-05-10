@@ -1,4 +1,3 @@
-
 # Defaults & plugin override
 defaults:
   - _self_                             # Load this config file itself
@@ -7,8 +6,8 @@ defaults:
 
 # Global flags
 seed: 42                             # Seed for reproducibility (env, policy, etc.)
-n_trials: ???                        # TODO: Define the number of trials to be run 
-num_episodes: ???                    # TODO: Define the number of episodes to run for each trial
+n_trials: 50                         # Number of trials to be run 
+num_episodes: 100                    # Number of episodes to run for each trial
 
 # Hydra output & sweeper settings
 hydra:
@@ -25,7 +24,6 @@ hydra:
 
 
 # Environment instantiation
-# TODO: instantiate the MarsRover environment in Hydra. Replace the ???s with your specification
 env:
   _target_: rl_exercises.environments.MarsRover
   transition_probabilities:                     # 5×2 matrix of probabilities in MarsRover
@@ -34,27 +32,35 @@ env:
       - [1, 1]
       - [1, 1]
       - [1, 1]
-  rewards: ???                        # Reward per cell index
-  horizon: ???                        # Max steps per episode
-  seed: ${seed}                       # Pass same seed into the env constructor
+  rewards: [1, -1, 0, 0, 10]         # Reward per cell index
+  horizon: 200                       # Max steps per episode
+  seed: ${seed}                      # Pass same seed into the env constructor
 
 
-# TODO: instantiate the EpsilonGreedyPolicy in Hydra. Replace the ???s with your specification
 policy:
   _target_: rl_exercises.week_3.EpsilonGreedyPolicy
-  epsilon: ???                        # TODO: Initial exploration rate
-  seed: ${seed}                       # Seed for the policy’s internal RNG
+  epsilon: 0.1                       # Initial exploration rate
+  seed: ${seed}                      # Seed for the policy’s internal RNG
 
 
-# TODO: instantiate the SARSA agent in Hydra. Replace the ???s with your specification
 agent:
   _target_: rl_exercises.week_3.SARSAAgent
-  alpha: ???                          # TODO: Define the inital learning rate
-  gamma: ???                          # TODO: Define the discount factor
+  alpha: 0.5                         # Initial learning rate
+  gamma: 0.99                        # Discount factor
 
 
-# TODO: Define the search space for the hyperparameters to be swept. Replace the ???s with your specification
-# see https://github.com/automl/hypersweeper/blob/main/examples/configs/search_space/sac.yaml for an example
 search_space:
   seed: ${seed}                      # Seed for the sweeper’s random number generator
-  hyperparameters: ???
+  hyperparameters:
+    alpha:
+      min: 0.1
+      max: 1.0
+      log: true
+    epsilon:
+      min: 0.01
+      max: 0.5
+      log: false
+    gamma:
+      min: 0.8
+      max: 1.0
+      log: false

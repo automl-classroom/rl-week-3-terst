@@ -174,8 +174,10 @@ def policy_evaluation(
         V_new = np.zeros(nS)
         for s in range(nS):
             a = pi[s]
-            V_new[s] = sum(T[s, a, s_next] * (R_sa[s, a] + gamma * V[s_next])
-                           for s_next in range(nS))
+            V_new[s] = sum(
+                T[s, a, s_next] * (R_sa[s, a] + gamma * V[s_next])
+                for s_next in range(nS)
+            )
         if np.max(np.abs(V_new - V)) < epsilon:
             break
         V = V_new
@@ -212,8 +214,10 @@ def policy_improvement(
     Q = np.zeros((nS, nA))
     for s in range(nS):
         for a in range(nA):
-            Q[s, a] = sum(T[s, a, s_next] * (R_sa[s, a] + gamma * V[s_next])
-                          for s_next in range(nS))
+            Q[s, a] = sum(
+                T[s, a, s_next] * (R_sa[s, a] + gamma * V[s_next])
+                for s_next in range(nS)
+            )
     pi_new = np.argmax(Q, axis=1)
     return Q, pi_new
 
