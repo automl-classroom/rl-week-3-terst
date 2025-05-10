@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt  # type: ignore[import]
 import numpy as np
-# type: ignore[import]
-from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage  # type: ignore[import]
 from rich import print as printr
 from rl_exercises.environments import MarsRover
 

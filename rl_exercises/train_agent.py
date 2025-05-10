@@ -26,13 +26,7 @@ from rl_exercises.agent.abstract_agent import AbstractAgent
 from rl_exercises.agent.buffer import SimpleBuffer
 from rl_exercises.environments import MarsRover
 from rl_exercises.week_2 import PolicyIteration, ValueIteration
-
-# from rl_exercises.week_4 import EpsilonGreedyPolicy as TabularEpsilonGreedyPolicy
-# from rl_exercises.week_4 import SARSAAgent
-# from rl_exercises.week_5 import EpsilonGreedyPolicy, TabularQAgent, VFAQAgent
-# from rl_exercises.week_6 import DQN, ReplayBuffer
-# from rl_exercises.week_7 import REINFORCE
-# from rl_exercises.week_8 import EpsilonDecayPolicy, EZGreedyPolicy
+from rl_exercises.week_4 import EpsilonGreedyPolicy as TabularEpsilonGreedyPolicy
 from stable_baselines3 import PPO, SAC
 from stable_baselines3.common.monitor import Monitor
 from tqdm import tqdm

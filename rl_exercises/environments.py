@@ -1,4 +1,4 @@
-"""GridCore Env taken from https://github.com/automl/TabularTempoRL/"""
+"""MarsRover Env"""
 
 from __future__ import annotations
 
